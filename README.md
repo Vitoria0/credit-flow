@@ -2,6 +2,12 @@
 
 Este projeto simula uma jornada de crédito: uma pessoa é cadastrada, recebe uma análise simplificada e, se aprovada, tem um ou dois cartões emitidos.
 
+Cada projeto possui seu próprio repositório, com uso de **commits semânticos** para registrar as alterações:
+
+- **Costumer — cadastro de clientes:** [https://github.com/Vitoria0/costumer-api](https://github.com/Vitoria0/costumer-api)
+- **Credit — análise de crédito:** [https://github.com/Vitoria0/credit-api](https://github.com/Vitoria0/credit-api)
+- **Card — emissão de cartões:** [https://github.com/Vitoria0/card-api](https://github.com/Vitoria0/card-api)
+
 Este guia tem duas partes: **primeiro, como executar e conferir o resultado sem precisar programar; depois, como o projeto funciona e por que foi organizado dessa forma**.
 
 É um ambiente de estudo e demonstração. Não emite cartões reais, não consulta órgãos de crédito e não deve receber dados pessoais reais.
