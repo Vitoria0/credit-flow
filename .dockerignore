@@ -1,0 +1,13 @@
+**/bin
+**/obj
+**/TestResults
+**/.git
+**/.vs
+**/.idea
+**/.env
+**/.env.*
+**/*.user
+**/*.suo
+**/*.md
+**/*.mdf
+**/*.ldf
