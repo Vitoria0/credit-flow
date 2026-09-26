@@ -100,7 +100,7 @@ Para executar tudo pelo Docker, você precisa de:
 
 1. **Docker Desktop**, aberto e funcionando em modo de containers Linux. No Windows, conclua a configuração de WSL 2 solicitada pelo instalador.
 2. **Git**, se for clonar pelo terminal. Como alternativa, baixe o ZIP do repositório e extraia-o.
-3. Internet na primeira execução, para baixar imagens e dependências.
+3. Conexão com a internet para clonar ou baixar o projeto e, na primeira execução, baixar imagens e dependências.
 4. Um navegador, como Edge, Chrome ou Firefox.
 
 Não precisa instalar .NET, SQL Server ou RabbitMQ separadamente: o Docker prepara esses componentes. Para este roteiro, use uma máquina Intel/AMD de 64 bits; a imagem de SQL Server usada é para Linux x86-64. Em ARM/Apple Silicon, não assuma que a execução será equivalente.
