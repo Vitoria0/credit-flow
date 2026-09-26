@@ -603,5 +603,3 @@ O Dockerfile tem etapas separadas: restauração, publicação, migrations, test
 O Compose espera SQL Server saudável antes das migrations e aguarda a migration de cada banco terminar antes da API correspondente. Os volumes guardam arquivos do banco e do broker entre reinicializações. As portas estão vinculadas a `127.0.0.1`, para uso local.
 
 O perfil `tests` não faz parte da inicialização normal. Ele permite executar a suíte dentro de containers sem instalar SDK no computador.
-
-Documentação específica: [Costumer](Costumer/README.md), [Credit](Credit/README.md) e [Card](Card/README.md).
