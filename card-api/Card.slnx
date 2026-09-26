@@ -1,0 +1,7 @@
+<Solution>
+  <Project Path="Card.Api/Card.Api.csproj" />
+  <Project Path="Card.Application/Card.Application.csproj" />
+  <Project Path="Card.Domain/Card.Domain.csproj" />
+  <Project Path="Card.Infrastructure/Card.Infrastructure.csproj" />
+  <Project Path="Card.Tests/Card.Tests.csproj" />
+</Solution>

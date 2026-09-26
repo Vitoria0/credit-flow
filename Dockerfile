@@ -3,7 +3,8 @@ FROM mcr.microsoft.com/dotnet/sdk:10.0 AS source
 ARG SERVICE=Costumer
 ENV SERVICE_NAME=${SERVICE}
 WORKDIR /src
-COPY ${SERVICE}/ ./
+ARG SERVICE_DIR=costumer-api
+COPY ${SERVICE_DIR}/ ./
 RUN dotnet restore "${SERVICE_NAME}.slnx"
 
 FROM source AS publish

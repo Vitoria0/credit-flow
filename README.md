@@ -2,11 +2,11 @@
 
 Este projeto simula uma jornada de crédito: uma pessoa é cadastrada, recebe uma análise simplificada e, se aprovada, tem um ou dois cartões emitidos.
 
-Cada projeto possui seu próprio repositório, com uso de **commits semânticos** para registrar as alterações:
+Este repositório contém os arquivos das três APIs, versionados juntos na raiz, com uso de **commits semânticos** para registrar as alterações:
 
-- **Costumer — cadastro de clientes:** [https://github.com/Vitoria0/costumer-api](https://github.com/Vitoria0/costumer-api)
-- **Credit — análise de crédito:** [https://github.com/Vitoria0/credit-api](https://github.com/Vitoria0/credit-api)
-- **Card — emissão de cartões:** [https://github.com/Vitoria0/card-api](https://github.com/Vitoria0/card-api)
+- **Costumer — cadastro de clientes:** [./costumer-api](./costumer-api)
+- **Credit — análise de crédito:** [./credit-api](./credit-api)
+- **Card — emissão de cartões:** [./card-api](./card-api)
 
 Este guia tem duas partes: **primeiro, como executar e conferir o resultado sem precisar programar; depois, como o projeto funciona e por que foi organizado dessa forma**.
 
@@ -99,7 +99,7 @@ O diagrama usa Mermaid. No GitHub ele é renderizado como fluxograma; em um edit
 Para executar tudo pelo Docker, você precisa de:
 
 1. **Docker Desktop**, aberto e funcionando em modo de containers Linux. No Windows, conclua a configuração de WSL 2 solicitada pelo instalador.
-2. Uma cópia desta pasta, baixada como ZIP e extraída, ou clonada pelo Git.
+2. **Git**, se for clonar pelo terminal. Como alternativa, baixe o ZIP do repositório e extraia-o.
 3. Internet na primeira execução, para baixar imagens e dependências.
 4. Um navegador, como Edge, Chrome ou Firefox.
 
@@ -122,11 +122,22 @@ Reserve alguns GB de disco e, como ponto de partida, cerca de 6–8 GB de memór
 
 ## 4. Executar: passo a passo
 
-Os comandos abaixo são para PowerShell, no Windows. Execute-os na pasta raiz, onde está este README e as pastas `Costumer`, `Credit` e `Card`.
+Os comandos abaixo são para PowerShell, no Windows. Comece pela raiz do repositório: a pasta que contém este README, `compose.yaml`, `Dockerfile` e as pastas `costumer-api`, `credit-api` e `card-api`.
+
+### Passo 0 — clonar o repositório
+
+Abra o PowerShell na pasta em que deseja guardar o projeto e execute:
+
+```powershell
+git clone https://github.com/Vitoria0/credit-flow.git
+Set-Location .\credit-flow
+```
+
+Se preferir não usar Git, no GitHub escolha **Code > Download ZIP** e extraia o arquivo. Nos dois casos, continue a partir da pasta raiz do projeto. Se já clonou ou extraiu o projeto, não precisa repetir este passo; abra essa pasta no terminal.
 
 ### Passo 1 — abrir o terminal na pasta certa
 
-No Explorador de Arquivos, abra a pasta do projeto. Clique com o botão direito em uma área vazia e escolha **Abrir no Terminal**. Confira:
+Se acabou de clonar, o terminal já deve estar na pasta correta. Caso contrário, no Explorador de Arquivos abra a pasta raiz extraída/clonada, clique com o botão direito em uma área vazia e escolha **Abrir no Terminal**. Confira:
 
 ```powershell
 Get-ChildItem
@@ -453,9 +464,9 @@ Esses serviços não iniciam bancos ou brokers. O arquivo `.env` ainda deve exis
 Se já tiver SDK .NET 10 instalado, a alternativa é:
 
 ```powershell
-dotnet test Costumer/Costumer.slnx
-dotnet test Credit/Credit.slnx
-dotnet test Card/Card.slnx
+dotnet test costumer-api/Costumer.slnx
+dotnet test credit-api/Credit.slnx
+dotnet test card-api/Card.slnx
 ```
 
 Cobertura principal:
@@ -514,7 +525,7 @@ O `ClienteId` transportado nas mensagens conecta os dados sem compartilhar tabel
 ### 11.3 As cinco camadas de cada serviço
 
 ```text
-Costumer/                         Credit/ e Card/ seguem a mesma organização
+costumer-api/                         credit-api/ e card-api/ seguem a mesma organização
 ├── Costumer.Api/                 Porta HTTP, configuração e composição
 ├── Costumer.Application/         Coordenação dos casos de uso e DTOs
 ├── Costumer.Domain/              Entidades, regras e contratos
@@ -610,17 +621,17 @@ O perfil `tests` não faz parte da inicialização normal. Ele permite executar 
 
 Para estudar sem se perder, siga um caminho de cada vez:
 
-1. `Costumer/Costumer.Api/Controllers/CostumerController.cs`: encontre o POST e os códigos HTTP.
-2. `Costumer/Costumer.Application/Services/CostumerService.cs`: acompanhe duplicidade → entidade → persistência → evento.
-3. `Costumer/Costumer.Domain/Entities/Costumer.cs`: veja as validações.
-4. `Credit/Credit.Infrastructure/MessageBroker/ClienteCadastradoConsumer.cs`: veja onde o evento vira uma chamada ao service e onde entram ACK/retry/DLQ.
-5. `Credit/Credit.Domain/Entities/CreditProposal.cs`: leia as três faixas de score.
-6. `Card/Card.Application/Services/CardService.cs`: acompanhe consistência, idempotência e emissão em lote.
+1. `costumer-api/Costumer.Api/Controllers/CostumerController.cs`: encontre o POST e os códigos HTTP.
+2. `costumer-api/Costumer.Application/Services/CostumerService.cs`: acompanhe duplicidade → entidade → persistência → evento.
+3. `costumer-api/Costumer.Domain/Entities/Costumer.cs`: veja as validações.
+4. `credit-api/Credit.Infrastructure/MessageBroker/ClienteCadastradoConsumer.cs`: veja onde o evento vira uma chamada ao service e onde entram ACK/retry/DLQ.
+5. `credit-api/Credit.Domain/Entities/CreditProposal.cs`: leia as três faixas de score.
+6. `card-api/Card.Application/Services/CardService.cs`: acompanhe consistência, idempotência e emissão em lote.
 7. Compare os `*Configuration.cs` e migrations: veja como as entidades se tornam tabelas e índices.
-8. Leia `Costumer/Costumer.Tests`, `Credit/Credit.Tests` e `Card/Card.Tests` e associe cada cenário a uma regra.
+8. Leia `costumer-api/Costumer.Tests`, `credit-api/Credit.Tests` e `card-api/Card.Tests` e associe cada cenário a uma regra.
 
 Perguntas úteis para revisar seu entendimento: por que o POST pode ter sucesso antes de existir cartão? Por que um 404 pode ser temporário? O que acontece se o broker falhar depois do SaveChangesAsync? Por que não há UNIQUE em ClienteId na tabela Cards?
 
-Documentação específica: [Costumer](https://github.com/Vitoria0/costumer-api), [Credit](https://github.com/Vitoria0/credit-api) e [Card](https://github.com/Vitoria0/card-api).
+Documentação específica: [Costumer](./costumer-api), [Credit](./credit-api) e [Card](./card-api).
 
 Referências oficiais para aprofundar: [Docker Compose e dependências](https://docs.docker.com/reference/compose-file/services/), [SQL Server em containers](https://learn.microsoft.com/en-us/sql/linux/quickstart-install-connect-docker?view=sql-server-ver17), [painel RabbitMQ](https://www.rabbitmq.com/docs/management).

@@ -11,3 +11,5 @@
 **/*.md
 **/*.mdf
 **/*.ldf
+
+.git-local-backup/

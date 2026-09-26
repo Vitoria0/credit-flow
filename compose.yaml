@@ -51,6 +51,7 @@ services:
       target: migrations
       args:
         SERVICE: Costumer
+        SERVICE_DIR: costumer-api
     environment:
       ConnectionStrings__DefaultConnection: "Server=sqlserver,1433;Database=CostumerDb;User Id=sa;Password=${SQL_PASSWORD};TrustServerCertificate=True;"
     depends_on:
@@ -64,6 +65,7 @@ services:
       target: migrations
       args:
         SERVICE: Credit
+        SERVICE_DIR: credit-api
     environment:
       ConnectionStrings__DefaultConnection: "Server=sqlserver,1433;Database=CreditDb;User Id=sa;Password=${SQL_PASSWORD};TrustServerCertificate=True;"
     depends_on:
@@ -77,6 +79,7 @@ services:
       target: migrations
       args:
         SERVICE: Card
+        SERVICE_DIR: card-api
     environment:
       ConnectionStrings__DefaultConnection: "Server=sqlserver,1433;Database=CardDb;User Id=sa;Password=${SQL_PASSWORD};TrustServerCertificate=True;"
     depends_on:
@@ -90,6 +93,7 @@ services:
       target: runtime
       args:
         SERVICE: Costumer
+        SERVICE_DIR: costumer-api
     environment:
       <<: *api-environment
       ConnectionStrings__DefaultConnection: "Server=sqlserver,1433;Database=CostumerDb;User Id=sa;Password=${SQL_PASSWORD};TrustServerCertificate=True;"
@@ -107,6 +111,7 @@ services:
       target: runtime
       args:
         SERVICE: Credit
+        SERVICE_DIR: credit-api
     environment:
       <<: *api-environment
       ConnectionStrings__DefaultConnection: "Server=sqlserver,1433;Database=CreditDb;User Id=sa;Password=${SQL_PASSWORD};TrustServerCertificate=True;"
@@ -124,6 +129,7 @@ services:
       target: runtime
       args:
         SERVICE: Card
+        SERVICE_DIR: card-api
     environment:
       <<: *api-environment
       ConnectionStrings__DefaultConnection: "Server=sqlserver,1433;Database=CardDb;User Id=sa;Password=${SQL_PASSWORD};TrustServerCertificate=True;"
@@ -142,6 +148,7 @@ services:
       target: tests
       args:
         SERVICE: Costumer
+        SERVICE_DIR: costumer-api
 
   test-credit:
     profiles: [tests]
@@ -150,6 +157,7 @@ services:
       target: tests
       args:
         SERVICE: Credit
+        SERVICE_DIR: credit-api
 
   test-card:
     profiles: [tests]
@@ -158,6 +166,7 @@ services:
       target: tests
       args:
         SERVICE: Card
+        SERVICE_DIR: card-api
 
 volumes:
   sql-data:

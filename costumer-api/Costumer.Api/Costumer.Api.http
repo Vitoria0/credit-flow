@@ -1,0 +1,6 @@
+@Costumer.Api_HostAddress = http://localhost:5100
+
+GET {{Costumer.Api_HostAddress}}/health
+Accept: text/plain
+
+###
