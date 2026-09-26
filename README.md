@@ -593,34 +593,4 @@ O Compose espera SQL Server saudável antes das migrations e aguarda a migration
 
 O perfil `tests` não faz parte da inicialização normal. Ele permite executar a suíte dentro de containers sem instalar SDK no computador.
 
-## 12. Limitações que você deve conhecer
-
-1. **Não há transação entre banco e mensagens.** Um cliente/proposta pode ser salvo e a publicação falhar em seguida.
-2. **No Credit, idempotência não recupera evento de saída perdido.** Se a proposta foi salva e PropostaGerada falhou, o retry encontra a proposta, considera processada e dá ACK sem republicar o evento.
-3. **Publisher confirms variam por fluxo.** Costumer usa confirmação ao publicar ClienteCadastrado; Credit não habilita confirms no publisher de PropostaGerada. Os encaminhamentos de retry/DLQ usam confirmação. Mensagem persistente não equivale a garantia de entrega ponta a ponta.
-4. **Retry não significa exactly-once.** Há janela entre republicar e dar ACK que pode produzir duplicatas. O dead-lettering nativo também não oferece garantia absoluta em falhas do broker.
-5. **Card tem idempotência simples**, com a limitação de concorrência descrita acima.
-6. **Não há autenticação/autorização nas APIs.** Swagger e HTTP são habilitados para estudo local; este Compose não é configuração de produção.
-7. **CPF não valida dígitos verificadores e score é aleatório.** Não há avaliação financeira real.
-8. **Nem todo erro vira 400/409.** Por exemplo, Costumer ainda não traduz especificamente conflitos simultâneos de índice único nem valida antecipadamente todos os limites de tamanho do banco.
-9. **Não há reconexão automática ao RabbitMQ nem reprocessamento automático da DLQ.** Após falhas de infraestrutura, pode ser necessário reiniciar as APIs.
-10. **Testes automatizados são unitários.** O roteiro manual verifica o ambiente real, mas não constitui uma suíte automatizada de integração.
-
-## 13. Roteiro de leitura do código
-
-Para estudar sem se perder, siga um caminho de cada vez:
-
-1. `Costumer/Costumer.Api/Controllers/CostumerController.cs`: encontre o POST e os códigos HTTP.
-2. `Costumer/Costumer.Application/Services/CostumerService.cs`: acompanhe duplicidade → entidade → persistência → evento.
-3. `Costumer/Costumer.Domain/Entities/Costumer.cs`: veja as validações.
-4. `Credit/Credit.Infrastructure/MessageBroker/ClienteCadastradoConsumer.cs`: veja onde o evento vira uma chamada ao service e onde entram ACK/retry/DLQ.
-5. `Credit/Credit.Domain/Entities/CreditProposal.cs`: leia as três faixas de score.
-6. `Card/Card.Application/Services/CardService.cs`: acompanhe consistência, idempotência e emissão em lote.
-7. Compare os `*Configuration.cs` e migrations: veja como as entidades se tornam tabelas e índices.
-8. Leia `Costumer/Costumer.Tests`, `Credit/Credit.Tests` e `Card/Card.Tests` e associe cada cenário a uma regra.
-
-Perguntas úteis para revisar seu entendimento: por que o POST pode ter sucesso antes de existir cartão? Por que um 404 pode ser temporário? O que acontece se o broker falhar depois do SaveChangesAsync? Por que não há UNIQUE em ClienteId na tabela Cards?
-
 Documentação específica: [Costumer](Costumer/README.md), [Credit](Credit/README.md) e [Card](Card/README.md).
-
-Referências oficiais para aprofundar: [Docker Compose e dependências](https://docs.docker.com/reference/compose-file/services/), [SQL Server em containers](https://learn.microsoft.com/en-us/sql/linux/quickstart-install-connect-docker?view=sql-server-ver17), [painel RabbitMQ](https://www.rabbitmq.com/docs/management).
