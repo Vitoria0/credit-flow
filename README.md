@@ -621,6 +621,6 @@ Para estudar sem se perder, siga um caminho de cada vez:
 
 Perguntas úteis para revisar seu entendimento: por que o POST pode ter sucesso antes de existir cartão? Por que um 404 pode ser temporário? O que acontece se o broker falhar depois do SaveChangesAsync? Por que não há UNIQUE em ClienteId na tabela Cards?
 
-Documentação específica: [Costumer](Costumer/README.md), [Credit](Credit/README.md) e [Card](Card/README.md).
+Documentação específica: [Costumer](https://github.com/Vitoria0/costumer-api), [Credit](https://github.com/Vitoria0/credit-api) e [Card](https://github.com/Vitoria0/card-api).
 
 Referências oficiais para aprofundar: [Docker Compose e dependências](https://docs.docker.com/reference/compose-file/services/), [SQL Server em containers](https://learn.microsoft.com/en-us/sql/linux/quickstart-install-connect-docker?view=sql-server-ver17), [painel RabbitMQ](https://www.rabbitmq.com/docs/management).
